@@ -4573,6 +4573,24 @@ x: {
 `, `d2/testdata/d2compiler/TestCompile2/vars/config/not-root.d2:4:4: "d2-config" can only appear at root vars`)
 				},
 			},
+			{
+				name: "data",
+				run: func(t *testing.T) {
+					_, config := assertCompile(t, `
+vars: {
+	d2-config: {
+		data: {
+      cat: hat
+      later: [1;5;2]
+    }
+  }
+}
+`, ``)
+					assert.Equal(t, 2, len(config.Data))
+					assert.Equal(t, "hat", config.Data["cat"])
+					assert.Equal(t, "1", (config.Data["later"]).([]interface{})[0])
+				},
+			},
 		}
 
 		for _, tc := range tca {
